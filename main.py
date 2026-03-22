@@ -26,6 +26,14 @@ def process_string(s):
     else:
         return "Please input a string containing only 0s and 1s"
 
+def get_color(result):
+    if result == "Accepted":
+        return curses.color_pair(1) | curses.A_BOLD
+    elif result == "Not Accepted":
+        return curses.color_pair(2) | curses.A_BOLD
+    else:
+        return curses.color_pair(3)
+
 def upload(stdscr, title="Upload File"):
     try:
         longest = 0
@@ -33,9 +41,9 @@ def upload(stdscr, title="Upload File"):
         h = 0
         while True:
             w = max(54, longest)
-            i = 3
             i = 0
             stdscr.clear()
+
             with open("upload_input_ins.txt", "r") as file:
                 i = 3
                 for line in file:
@@ -47,8 +55,10 @@ def upload(stdscr, title="Upload File"):
                     for t in splitted_text:
                         stdscr.addstr(i, 2, t)
                         i += 1
+
             draw_frame(stdscr, title, len(files)+h+(i-2), w)
             h = 1
+
             for file in files:
                 stdscr.addstr(i, 2, "Enter the filename: " + file)
                 try:
@@ -61,8 +71,10 @@ def upload(stdscr, title="Upload File"):
                             l = line.strip().replace(" ", "")
                             x = process_string(l)
                             longest = max(longest, len(f"  {l}: {x}")+4)
-                            stdscr.addstr(i, 2, "  " + l + ": " + x)
+
+                            stdscr.addstr(i, 2, "  " + l + ": " + x, get_color(x))
                     i -= 1
+
                 except FileNotFoundError:
                     if file.isspace():
                         stdscr.addstr(i+1, 2, "  Please input a non-empty string")
@@ -70,8 +82,8 @@ def upload(stdscr, title="Upload File"):
                         stdscr.addstr(i+1, 2, "  File not found")
                     h += 1
 
-                # stdscr.addstr(i+1, 2, process_file(file))
                 i += 2
+
             curses.echo()
             curses.curs_set(1)
             stdscr.addstr(i, 2, "Enter the filename: ")
@@ -80,11 +92,13 @@ def upload(stdscr, title="Upload File"):
             curses.noecho()
             stdscr.refresh()
 
-            if fn.lower().strip().replace(" ", "") == "menu":
+            key = fn.lower().strip().replace(" ", "")
+
+            if key == "menu":
                 return
-            elif fn.lower().strip().replace(" ", "") == "exit":
+            elif key == "exit":
                 exit(stdscr)
-            elif fn.lower().strip().replace(" ", "") == "clear":
+            elif key == "clear":
                 longest = 0
                 files.clear()
                 h = 0
@@ -105,6 +119,7 @@ def upload(stdscr, title="Upload File"):
                     h -= 1
                 except FileNotFoundError:
                     pass
+
     except curses.error:
         stdscr.clear()
         draw_frame(stdscr, "Error", 1, 54)
@@ -112,14 +127,12 @@ def upload(stdscr, title="Upload File"):
         stdscr.getch()
         upload(stdscr, title)
 
-
 def exit(stdscr, title="Exit"):
     stdscr.clear()
     draw_frame(stdscr, title, 1, 54)
     stdscr.addstr(3, 2, "Thank you for using our program!")
     stdscr.getch()
     sys.exit()
-
 
 def normal(stdscr, title):
     try:
@@ -134,6 +147,7 @@ def normal(stdscr, title):
             h = (len(inputs))*2
             i = 0
             stdscr.clear()
+
             with open("normal_input_ins.txt", "r") as file:
                 i = 3
                 for line in file:
@@ -145,11 +159,16 @@ def normal(stdscr, title):
                     for t in splitted_text:
                         stdscr.addstr(i, 2, t)
                         i += 1
+
             draw_frame(stdscr, title, h+(i-2), w)
+
             for inp in inputs:
-                stdscr.addstr(i, 2, "Enter a string: " + inp)
-                stdscr.addstr(i+1, 2, "  " + process_string(inp))
+                result = process_string(inp)
+                stdscr.addstr(i, 2, "Enter a string: ")
+                stdscr.addstr(inp, get_color(result))
+                stdscr.addstr(i+1, 2, "  "+result, get_color(result))
                 i += 2
+
             curses.echo()
             curses.curs_set(1)
             stdscr.addstr(i, 2, "Enter a string: ")
@@ -158,14 +177,17 @@ def normal(stdscr, title):
             curses.noecho()
             stdscr.refresh()
 
-            if s.lower().strip().replace(" ", "") == "menu":
+            key = s.lower().strip().replace(" ", "")
+
+            if key == "menu":
                 return
-            elif s.lower().strip().replace(" ", "") == "exit":
+            elif key == "exit":
                 exit(stdscr)
-            elif s.lower().strip().replace(" ", "") == "clear":
+            elif key == "clear":
                 inputs.clear()
             else:
                 inputs.append(s)
+
     except curses.error:
         stdscr.clear()
         draw_frame(stdscr, "Error", 1, 54)
@@ -173,9 +195,7 @@ def normal(stdscr, title):
         stdscr.getch()
         upload(stdscr, title)
 
-
 def about(stdscr, title):
-
     while True:
         h, w = 12, 54
         with open("about.txt", "r") as file:
@@ -190,35 +210,44 @@ def about(stdscr, title):
                     stdscr.addstr(y, 2, t)
                     y += 1
 
-        stdscr.addstr(y+1, 0, "Press any key to return to Main Menu".center(w-4))
+        stdscr.addstr(y+1, 0, "Press any key to return to Main Menu".center(w-4), curses.color_pair(1) | curses.A_BOLD)
         draw_frame(stdscr, title, y, w)
         stdscr.refresh()
 
-        key = stdscr.getch()
+        stdscr.getch()
         return
 
 def main(stdscr):
     curses.curs_set(0)
+
+    curses.start_color()
+    curses.use_default_colors()
+    curses.init_pair(1, curses.COLOR_GREEN, -1)
+    curses.init_pair(2, curses.COLOR_RED, -1)
+    curses.init_pair(3, curses.COLOR_WHITE, -1)
+
     curr = 0
 
     while True:
         stdscr.clear()
         h, w = len(menu), 30
+
         for i, item in enumerate(menu):
             if curr == i:
-                stdscr.addstr(i+3, 2, f"► {item} ", curses.COLOR_GREEN)
+                stdscr.addstr(i+3, 2, f"► {item}", curses.color_pair(1))
             else:
                 stdscr.addstr(i+3, 2, item)
-        
+
         draw_frame(stdscr, "0dd - Main Menu", h, w)
         stdscr.refresh()
+
         key = stdscr.getch()
 
         if key == curses.KEY_UP:
             curr = (curr-1) % h
         elif key == curses.KEY_DOWN:
             curr = (curr+1) % h
-        elif key == curses.KEY_ENTER or key in (10, 13):
+        elif key in (10, 13):
             selected = menu[curr]
             stdscr.clear()
             stdscr.refresh()
