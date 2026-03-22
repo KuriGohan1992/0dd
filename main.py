@@ -193,7 +193,7 @@ def normal(stdscr, title):
         draw_frame(stdscr, "Error", 1, 54)
         stdscr.addstr(3,2, "Error: Terminal window is too small")
         stdscr.getch()
-        upload(stdscr, title)
+        normal(stdscr, title)
 
 def about(stdscr, title):
     while True:
@@ -255,7 +255,7 @@ def main(stdscr):
             if selected == "Normal Input":
                 normal(stdscr, selected)
             elif selected == "Upload File":
-                upload(stdscr)
+                upload(stdscr, selected)
             elif selected == "About":
                 about(stdscr, selected+" 0dd")
             elif selected == "Exit":
