@@ -1,4 +1,3 @@
-This project was developed by Charl Emmanuel E. Mendez and Kriztan V. Sumbillo of BSCS-3A (Batch 2027) as the Final Project for CSAL101 under Ma'am Nikka Ysabel Farofaldane.
+"0dd" is a rule-based input processor that validates binary strings based on whether they contain an odd number of 0s. Inputs can be tested manually or through file upload, and each is classified as Accepted or Not Accepted.
 
-This program is a rule-based input processor that allows users to test examples, upload files, and experiment with custom rules for pattern matching and validation.
-
+This project was developed by Charl Emmanuel E. Mendez and Kriztan V. Sumbillo of BSCS-3A (Batch 2027) as the final project for CSAL101 under the guidance of Ma'am Nikka Ysabel Farofaldane.

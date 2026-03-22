@@ -105,7 +105,7 @@ def upload(stdscr, title="Upload File"):
                     h -= 1
                 except FileNotFoundError:
                     pass
-    except:
+    except curses.error:
         stdscr.clear()
         draw_frame(stdscr, "Error", 1, 54)
         stdscr.addstr(3,2, "Error: Terminal window is too small")
@@ -166,7 +166,7 @@ def normal(stdscr, title):
                 inputs.clear()
             else:
                 inputs.append(s)
-    except:
+    except curses.error:
         stdscr.clear()
         draw_frame(stdscr, "Error", 1, 54)
         stdscr.addstr(3,2, "Error: Terminal window is too small")
@@ -190,8 +190,8 @@ def about(stdscr, title):
                     stdscr.addstr(y, 2, t)
                     y += 1
 
-        stdscr.addstr(y, 0, "Press any key to return to Main Menu".center(w-4))
-        draw_frame(stdscr, title, y-1, w)
+        stdscr.addstr(y+1, 0, "Press any key to return to Main Menu".center(w-4))
+        draw_frame(stdscr, title, y, w)
         stdscr.refresh()
 
         key = stdscr.getch()
@@ -210,7 +210,7 @@ def main(stdscr):
             else:
                 stdscr.addstr(i+3, 2, item)
         
-        draw_frame(stdscr, "Main Menu", h, w)
+        draw_frame(stdscr, "0dd - Main Menu", h, w)
         stdscr.refresh()
         key = stdscr.getch()
 
@@ -228,7 +228,7 @@ def main(stdscr):
             elif selected == "Upload File":
                 upload(stdscr)
             elif selected == "About":
-                about(stdscr, selected)
+                about(stdscr, selected+" 0dd")
             elif selected == "Exit":
                 exit(stdscr)
 
