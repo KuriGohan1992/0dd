@@ -1,0 +1,5 @@
+For each string in the input file separated by a comma or a line break, the program will print "Accepted" only if the string is valid and has an odd number of 0s
+A valid string is a string that contains only 0, 1, or whitespace characters
+Input "Menu" to return to the menu screen
+Input "Exit" to exit the program
+Input "Clear" to clear the terminal

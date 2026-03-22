@@ -1,0 +1,4 @@
+This project was developed by Charl Emmanuel E. Mendez and Kriztan V. Sumbillo of BSCS-3A (Batch 2027) as the Final Project for CSAL101 under Ma'am Nikka Ysabel Farofaldane.
+
+This program is a rule-based input processor that allows users to test examples, upload files, and experiment with custom rules for pattern matching and validation.
+
