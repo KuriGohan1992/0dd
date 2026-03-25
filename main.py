@@ -5,17 +5,17 @@ import sys
 menu = ["Normal Input", "Upload File", "About", "Exit"]
 
 def draw_frame(stdscr, title, h, w):
-    stdscr.addstr(0, 0, "╔" + "═"*(w-2) + "╗")
-    stdscr.addstr(1, 0, title.center(w))
-    stdscr.addstr(1, 0, "║")
-    stdscr.addstr(1, w-1, "║")
-    stdscr.addstr(2, 0, "╠" + "═"*(w-2) + "╣")
+    stdscr.addstr(0, 0, "╔" + "═"*(w-2) + "╗", curses.color_pair(1)|curses.A_BOLD)
+    stdscr.addstr(1, 0, title.center(w), curses.color_pair(1)|curses.A_BOLD)
+    stdscr.addstr(1, 0, "║", curses.color_pair(1)|curses.A_BOLD)
+    stdscr.addstr(1, w-1, "║", curses.color_pair(1)|curses.A_BOLD)
+    stdscr.addstr(2, 0, "╠" + "═"*(w-2) + "╣", curses.color_pair(1)|curses.A_BOLD)
     
     for y in range(3,h+3):
-        stdscr.addstr(y, 0, "║")
-        stdscr.addstr(y, w-1, "║")
+        stdscr.addstr(y, 0, "║", curses.color_pair(1)|curses.A_BOLD)
+        stdscr.addstr(y, w-1, "║", curses.color_pair(1)|curses.A_BOLD)
 
-    stdscr.addstr(h+3, 0, "╚" + "═"*(w-2) + "╝")
+    stdscr.addstr(h+3, 0, "╚" + "═"*(w-2) + "╝", curses.color_pair(1)|curses.A_BOLD)
 
 def process_string(s):
     s = s.strip().replace(" ", "")
@@ -41,20 +41,38 @@ def upload(stdscr, title="Upload File"):
         h = 0
         while True:
             w = max(54, longest)
-            i = 0
+            i = 12
             stdscr.clear()
-
-            with open("upload_input_ins.txt", "r") as file:
-                i = 3
-                for line in file:
-                    if line == "\n":
-                        i += 1
-                        continue
-
-                    splitted_text = textwrap.wrap("• " + line, width=(w-4))
-                    for t in splitted_text:
-                        stdscr.addstr(i, 2, t)
-                        i += 1
+            
+            stdscr.addstr(3, 2, "• Each line in the input file is processed as a")
+            stdscr.addstr(4, 4, "string input")
+            stdscr.addstr(5, 2, "• The program will print ")
+            stdscr.addstr('"Accepted"', get_color("Accepted"))
+            stdscr.addstr(" only if the")
+            stdscr.addstr(6, 4, "string is valid and has an odd number of 0s")
+            stdscr.addstr(7, 2, "• A valid string is a string that contains only 0,")
+            stdscr.addstr(8, 4, "1, or whitespace characters")
+            stdscr.addstr(9, 2, "• Input ")
+            stdscr.addstr('"Menu"', get_color("Accepted"))
+            stdscr.addstr(" to return to the menu screen")
+            stdscr.addstr(10, 2, "• Input ")
+            stdscr.addstr('"Exit"', get_color("Accepted"))
+            stdscr.addstr(" to exit the program")
+            stdscr.addstr(11, 2, "• Input ")
+            stdscr.addstr('"Clear"', get_color("Accepted"))
+            stdscr.addstr(" to clear the terminal")
+            
+            # with open("upload_input_ins.txt", "r") as file:
+            #     i = 3
+            #     for line in file:
+            #         if line == "\n":
+            #             i += 1
+            #             continue
+            #
+            #         splitted_text = textwrap.wrap("• " + line, width=(w-4))
+            #         for t in splitted_text:
+            #             stdscr.addstr(i, 2, t)
+            #             i += 1
 
             draw_frame(stdscr, title, len(files)+h+(i-2), w)
             h = 1
@@ -145,20 +163,36 @@ def normal(stdscr, title):
                 w = 54
 
             h = (len(inputs))*2
-            i = 0
+            i = 11
             stdscr.clear()
 
-            with open("normal_input_ins.txt", "r") as file:
-                i = 3
-                for line in file:
-                    if line == "\n":
-                        i += 1
-                        continue
-
-                    splitted_text = textwrap.wrap("• " + line, width=(w-4))
-                    for t in splitted_text:
-                        stdscr.addstr(i, 2, t)
-                        i += 1
+            stdscr.addstr(3, 2, "• This program will say ")
+            stdscr.addstr('"Accepted"', get_color("Accepted"))
+            stdscr.addstr(" only if the")
+            stdscr.addstr(4, 4, "inputted string is valid and has an odd number")
+            stdscr.addstr(5, 4, "of 0s")
+            stdscr.addstr(6, 2, "• A valid string is a string that contains only 0,")
+            stdscr.addstr(7, 4, "1, or whitespace characters")
+            stdscr.addstr(8, 2, "• Input ")
+            stdscr.addstr('"Menu"', get_color("Accepted"))
+            stdscr.addstr(" to return to the menu screen")
+            stdscr.addstr(9, 2, "• Input ")
+            stdscr.addstr('"Exit"', get_color("Accepted"))
+            stdscr.addstr(" to exit the program")
+            stdscr.addstr(10, 2, "• Input ")
+            stdscr.addstr('"Clear"', get_color("Accepted"))
+            stdscr.addstr(" to clear the terminal")
+            # with open("normal_input_ins.txt", "r") as file:
+            #     i = 3
+            #     for line in file:
+            #         if line == "\n":
+            #             i += 1
+            #             continue
+            #
+            #         splitted_text = textwrap.wrap("• " + line, width=(w-4))
+            #         for t in splitted_text:
+            #             stdscr.addstr(i, 2, t)
+            #             i += 1
 
             draw_frame(stdscr, title, h+(i-2), w)
 
@@ -198,20 +232,44 @@ def normal(stdscr, title):
 def about(stdscr, title):
     while True:
         h, w = 12, 54
-        with open("about.txt", "r") as file:
-            y = 3
-            for line in file:
-                if line == "\n":
-                    y += 1
-                    continue
+        stdscr.addstr(3, 2, '"0dd"', get_color("Accepted"))
+        stdscr.addstr(" is a rule-based input processor that")
+        stdscr.addstr(4, 2, "validates binary string based on whether they")
+        stdscr.addstr(5, 2, "contain an odd number of 0s. Inputs can be tested")
+        stdscr.addstr(6, 2, "manually or through file upload, and each is")
+        stdscr.addstr(7, 2, "classified as ")
+        stdscr.addstr("Accepted", get_color("Accepted"))
+        stdscr.addstr(" or ")
+        stdscr.addstr("Not Accepted", get_color("Not Accepted"))
+        stdscr.addstr(".")
+        stdscr.addstr(9, 2, "This project was developed by ")
+        stdscr.addstr("Charl Emmanuel E.", get_color("Accepted"))
+        stdscr.addstr(10, 2, "Mendez", get_color("Accepted"))
+        stdscr.addstr(" and ")
+        stdscr.addstr("Kriztan V. Sumbillo", get_color("Accepted"))
+        stdscr.addstr(" of ")
+        stdscr.addstr("BSCS-3A", get_color("Accepted"))
+        stdscr.addstr(" (Batch")
+        stdscr.addstr(11, 2, "2027) as the final project for ")
+        stdscr.addstr("CSAL101", get_color("Accepted"))
+        stdscr.addstr(" under the")
+        stdscr.addstr(12, 2, "guidance of ")
+        stdscr.addstr("Ma'am Nikka Ysabel Farofaldane", get_color("Accepted"))
+        stdscr.addstr(".")
+        # with open("about.txt", "r") as file:
+        #     y = 3
+        #     for line in file:
+        #         if line == "\n":
+        #             y += 1
+        #             continue
+        #
+        #         splitted_text = textwrap.wrap(line, width=(w-4))
+        #         for t in splitted_text:
+        #             stdscr.addstr(y, 2, t)
+        #             y += 1
 
-                splitted_text = textwrap.wrap(line, width=(w-4))
-                for t in splitted_text:
-                    stdscr.addstr(y, 2, t)
-                    y += 1
-
-        stdscr.addstr(y+1, 0, "Press any key to return to Main Menu".center(w-4), curses.color_pair(1) | curses.A_BOLD)
-        draw_frame(stdscr, title, y, w)
+        stdscr.addstr(14, 0, "Press any key to return to Main Menu".center(w-4), curses.color_pair(1) | curses.A_BOLD)
+        draw_frame(stdscr, title, 13, w)
         stdscr.refresh()
 
         stdscr.getch()
