@@ -94,10 +94,10 @@ def upload(stdscr, title="Upload File"):
                     i -= 1
 
                 except FileNotFoundError:
-                    if file.isspace():
-                        stdscr.addstr(i+1, 2, "  Please input a non-empty string")
+                    if file == "":
+                        stdscr.addstr(i+1, 2, "  Please input a non-empty string", get_color(""))
                     else:
-                        stdscr.addstr(i+1, 2, "  File not found")
+                        stdscr.addstr(i+1, 2, "  File not found", get_color(""))
                     h += 1
 
                 i += 2
@@ -121,22 +121,25 @@ def upload(stdscr, title="Upload File"):
                 files.clear()
                 h = 0
             else:
-                files.append(fn)
-                try:
-                    with open(fn, "r") as file:
-                        for line in file:
-                            if line.isspace():
-                                continue
-                            i += 1
-                            h += 1
-                            l = line.strip().replace(" ", "")
-                            x = process_string(l)
-                            longest = max(longest, len(f"  {l}: {x}")+4)
+                if key == "":
+                    files.append("")
+                else:
+                    files.append(fn)
+                    try:
+                        with open(fn, "r") as file:
+                            for line in file:
+                                if line.isspace():
+                                    continue
+                                i += 1
+                                h += 1
+                                l = line.strip().replace(" ", "")
+                                x = process_string(l)
+                                longest = max(longest, len(f"  {l}: {x}")+4)
 
-                    i -= 2
-                    h -= 1
-                except FileNotFoundError:
-                    pass
+                        i -= 2
+                        h -= 1
+                    except FileNotFoundError:
+                        pass
 
     except curses.error:
         stdscr.clear()
